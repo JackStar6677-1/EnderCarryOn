@@ -1,0 +1,17 @@
+{
+  "parent": "minecraft:block/chest",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1001
+      },
+      "model": "endercarryon:block/chest"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2000
+      },
+      "model": "endercarryon:item/entity_carrier"
+    }
+  ]
+}

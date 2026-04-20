@@ -14,7 +14,10 @@ public final class EnderCarryOn extends EnderPlugin {
         registerListener(new OnInventoryDragListener());
         registerListener(new OnPlayerDropItemListener());
         registerListener(new OnPlayerInteractListener());
+        registerListener(new OnPlayerInteractEntityListener());
         registerListener(new OnPlayerItemHeldListener());
+
+        registerBukkitCommand("endercarryon", new net.endkind.enderCarryOn.commands.HelpCommand());
 
         if (config.getBoolean("reset_walk_speed_on_join") || config.getBoolean("resource_pack.use")) {
             registerListener(new OnPlayerJoinListener(this));

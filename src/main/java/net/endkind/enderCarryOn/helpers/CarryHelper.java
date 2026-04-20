@@ -20,10 +20,11 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public final class CarryHelper {
-    private static final NamespacedKey key = new NamespacedKey("minecraft", "movement_speed");
-    private static final AttributeModifier attributeModifier = new AttributeModifier(key, -0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
+    private static final UUID modifierId = UUID.fromString("6f0e34c0-0b6b-4b1a-8b1a-0b6b4b1a8b1a");
+    private static final AttributeModifier attributeModifier = new AttributeModifier(modifierId, "endercarryon_speed", -0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
 
     private static final List<Material> allowedCarryBlocks = new ArrayList<>(Arrays.asList(
             Material.CHEST,
@@ -48,15 +49,52 @@ public final class CarryHelper {
         ItemMeta itemMeta = item.getItemMeta();
         BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
 
-        NamespacedKey itemModel = Keys.getItemModelKey(block.getType());
+        int customModelData = Keys.getCustomModelData(block.getType());
 
-        blockStateMeta.setItemModel(itemModel);
+        blockStateMeta.setCustomModelData(customModelData);
         blockStateMeta.getPersistentDataContainer().set(Keys.CARRY, PersistentDataType.BYTE, (byte) 1);
         blockStateMeta.setBlockState(block.getState());
 
         item.setItemMeta(blockStateMeta);
 
-        return setAttributeModifier(item, Attribute.MOVEMENT_SPEED, attributeModifier);
+        return setAttributeModifier(item, Attribute.GENERIC_MOVEMENT_SPEED, attributeModifier);
+    }
+
+    public static ItemStack getCarryEntityItem(org.bukkit.entity.Entity entity) {
+        // Create an item representating the entity (using BARRIER or similar as base, we'll use CHEST and CMD 2000)
+        ItemStack item = new ItemStack(org.bukkit.Material.CHEST);
+        ItemMeta itemMeta = item.getItemMeta();
+
+        // Save EntitySnapshot
+        org.bukkit.entity.EntitySnapshot snapshot = entity.createSnapshot();
+        String snapshotData = snapshot.getAsString();
+
+        itemMeta.setCustomModelData(Keys.ENTITY_ID);
+        itemMeta.getPersistentDataContainer().set(Keys.CARRY, org.bukkit.persistence.PersistentDataType.BYTE, (byte) 1);
+        itemMeta.getPersistentDataContainer().set(Keys.ENTITY_DATA, org.bukkit.persistence.PersistentDataType.STRING, snapshotData);
+
+        // Name of the entity
+        String name = entity.getCustomName() != null ? entity.getCustomName() : entity.getType().getName();
+        itemMeta.displayName(net.kyori.adventure.text.Component.text("Cargando: " + name)
+                .color(net.kyori.adventure.text.format.NamedTextColor.GOLD));
+
+        item.setItemMeta(itemMeta);
+
+        return setAttributeModifier(item, Attribute.GENERIC_MOVEMENT_SPEED, attributeModifier);
+    }
+
+    public static boolean isAllowedEntity(org.bukkit.entity.Entity entity) {
+        if (!(entity instanceof org.bukkit.entity.LivingEntity)) return false;
+        
+        org.bukkit.entity.EntityType type = entity.getType();
+        
+        // Hostile check per user request
+        if (entity instanceof org.bukkit.entity.Monster) {
+            return type == org.bukkit.entity.EntityType.ZOMBIE || type == org.bukkit.entity.EntityType.ENDERMITE;
+        }
+        
+        // Passive/Neutral are allowed
+        return true;
     }
 
     private static boolean isAllowedCarryTarget(Block block) {
