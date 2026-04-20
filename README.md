@@ -1,31 +1,36 @@
-# EnderCarryOn
+# EnderCarryOn (1.20.6 Port)
 
-EnderCarryOn is a PaperMC plugin developed based on the CarryOn mod. It implements proven mechanics and enhances the gaming experience.
+EnderCarryOn es un plugin para PaperMC basado en el mod CarryOn. Esta versión ha sido adaptada específicamente para **Minecraft 1.20.6**, utilizando `CustomModelData` para las texturas de carga.
 
-## Features
+## Características
+- Carga de Cofres, Cofres Trampa, Ender Chests y Barriles.
+- Restricciones de movimiento e interacción mientras se carga un bloque.
+- Renderizado 3D del bloque cargado en las manos del jugador (requiere Resource Pack).
 
-- Carrying Chest, Trapped Chest, Ender Chest and Barrel (more features will be added with updates)
-- Restrictions on movement and inventory interactions when a chest is being carried
+## Dependencias Obligatorias
+Este plugin **requiere** [EnderCore](https://github.com/JackStar6677-1/EnderCore) para funcionar correctamente. Asegúrate de tener instalado `EnderCore v0.2.0` o superior.
 
-## Dependencies
+## 🎨 Resource Pack (Requerido)
+Para la versión 1.20.6, el sistema de texturas nativo de 1.21.3 no funciona. Por ello, es **obligatorio** usar el Resource Pack adaptado incluido en este repositorio.
 
-- This plugin requires [EnderCore](https://github.com/Endkind/EnderCore/releases/) (version 0.2.0 or newer) as a dependency.  
-  You can obtain the current version of EnderCore either via [GitHub](https://github.com/Endkind/EnderCore/releases/) or from the [Papermc Hangar](https://hangar.papermc.io/Endkind_Ender/EnderCore/versions).
-- This plugin requires a texture pack to function correctly. However, the plugin already enforces the texture pack for players by default.
-- Requires at least Minecraft version 1.21.3.
+### Instalación del Resource Pack:
+1. Descarga el archivo [**resourcepack.zip**](./resourcepack.zip) de este repositorio.
+2. Puedes instalarlo localmente en tu cliente (`.minecraft/resourcepacks`).
+3. **Recomendado**: Súbelo a un host (como Dropbox o MCPacks) y coloca el enlace en la `config.yml` del plugin para que los jugadores lo descarguen automáticamente al entrar.
 
-## Configuration Notes
+## Configuración
+En el `config.yml`, puedes ajustar:
+- `resource_pack.use`: Activa/Desactiva el envío automático del pack.
+- `resource_pack.url`: El link de descarga directa de tu Resource Pack.
+- `resource_pack.hash`: El hash SHA-1 (en minúsculas) del archivo zip.
 
-- In config.yml, the resource pack can be disabled by setting "use" to false.
-- Alternatively, you can use your own resource pack by providing an appropriate URL along with the correct SHA-1 hash (in lowercase).
-- If the texture pack is not used, an error texture will be displayed when carrying chests.
+## Uso
+- **Shift (Agacharse) + Clic Derecho** con la **mano vacía** sobre un bloque válido para cargarlo.
+- Para soltarlo, simplemente haz clic derecho de nuevo.
 
-## Installation
+## Créditos
+Basado en el mod **CarryOn** y el plugin original de **Endkind**.
+Esta versión 1.20.6 fue adaptada por JackStar6677-1.
 
-1. Ensure that the latest v0.y.z version of EnderCore is installed.
-2. Copy the EnderCarryOn-x.y.z.jar into your PaperMC server's plugin folder.
-3. Restart the server.
-
-## License
-
-This project is licensed under the terms of the [MIT](https://github.com/Endkind/EnderCarryOn/blob/main/LICENSE) License.
+## Licencia
+Este proyecto está bajo la licencia [MIT](LICENSE).
